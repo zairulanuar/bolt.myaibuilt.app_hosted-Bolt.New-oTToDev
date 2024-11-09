@@ -155,7 +155,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           setModels([...(MODEL_LIST.filter(m => m.provider !== 'OpenRouter')),
             ...models.sort((a, b) => a.name.localeCompare(b.name)).map(m => ({
                 name: m.id,
-                label: m.name,
+                label: `${m.name} - in:$${(m.pricing.prompt * 1_000_000).toFixed(
+            2)} out:$${(m.pricing.completion * 1_000_000).toFixed(2)} - context ${Math.floor(
+                  m.context_length / 1000)}k`,
                 provider: 'OpenRouter'
               }))])
         }
