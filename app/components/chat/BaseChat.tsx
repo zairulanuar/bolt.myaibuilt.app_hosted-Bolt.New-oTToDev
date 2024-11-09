@@ -15,6 +15,7 @@ import { APIKeyManager } from './APIKeyManager';
 import Cookies from 'js-cookie';
 
 import styles from './BaseChat.module.scss';
+import type { ModelInfo } from '~/utils/types';
 
 const EXAMPLE_PROMPTS = [
   { text: 'Build a todo app in React using Tailwind' },
@@ -29,7 +30,7 @@ const providerList = [...new Set(MODEL_LIST.map((model) => model.provider))]
 const ModelSelector = ({ model, setModel, provider, setProvider, modelList, providerList }) => {
   return (
     <div className="mb-2 flex gap-2">
-      <select 
+      <select
         value={provider}
         onChange={(e) => {
           setProvider(e.target.value);
@@ -88,6 +89,10 @@ interface BaseChatProps {
   enhancePrompt?: () => void;
 }
 
+function getFreeModels(models) {
+  return models.filter(m => Number(m.pricing.prompt) + Number(m.pricing.completion) === 0);
+}
+
 export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
   (
     {
@@ -114,6 +119,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
   ) => {
     const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
     const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
+    const [models, setModels] = useState<ModelInfo[]>(MODEL_LIST);
 
     useEffect(() => {
       // Load API keys from cookies on component mount
@@ -132,6 +138,32 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       }
     }, []);
 
+    useEffect(() => {
+      fetchModels();
+    }, []);
+
+    const fetchModels = async () => {
+      try {
+        const response = await fetch('/api/openrouter-models');
+        const data = await response.json();
+        if (data.models) {
+          setModels(data.models);
+          const models = data.models;
+          if (!models.find(m => m.id === model)) {
+            setModel(models[0]?.id || '');
+          }
+          setModels([...(MODEL_LIST.filter(m => m.provider !== 'OpenRouter')),
+            ...models.sort((a, b) => a.name.localeCompare(b.name)).map(m => ({
+                name: m.id,
+                label: m.name,
+                provider: 'OpenRouter'
+              }))])
+        }
+      } catch (error) {
+        console.error('Error fetching models:', error);
+      }
+    };
+
     const updateApiKey = (provider: string, key: string) => {
       try {
         const updatedApiKeys = { ...apiKeys, [provider]: key };
@@ -147,6 +179,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         console.error('Error saving API keys to cookies:', error);
       }
     };
+
+
 
     return (
       <div
@@ -195,7 +229,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 <ModelSelector
                   model={model}
                   setModel={setModel}
-                  modelList={MODEL_LIST}
+                  modelList={models}
                   provider={provider}
                   setProvider={setProvider}
                   providerList={providerList}
