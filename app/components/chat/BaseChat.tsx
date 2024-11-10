@@ -15,7 +15,6 @@ import { APIKeyManager } from './APIKeyManager';
 import Cookies from 'js-cookie';
 
 import styles from './BaseChat.module.scss';
-import type { ModelInfo } from '~/utils/types';
 
 const EXAMPLE_PROMPTS = [
   { text: 'Build a todo app in React using Tailwind' },
@@ -28,6 +27,8 @@ const EXAMPLE_PROMPTS = [
 const providerList = [...new Set(MODEL_LIST.map((model) => model.provider))]
 
 const ModelSelector = ({ model, setModel, provider, setProvider, modelList, providerList }) => {
+  const currentModelList = [...modelList].filter(e => e.provider == provider && e.name);
+  console.log(modelList, currentModelList);
   return (
     <div className="mb-2 flex gap-2">
       <select
@@ -52,12 +53,13 @@ const ModelSelector = ({ model, setModel, provider, setProvider, modelList, prov
         </option>
       </select>
       <select
+        key={provider}
         value={model}
         onChange={(e) => setModel(e.target.value)}
         className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all"
       >
-        {[...modelList].filter(e => e.provider == provider && e.name).map((modelOption) => (
-          <option key={modelOption.name} value={modelOption.name}>
+        {currentModelList.map((modelOption) => (
+          <option key={modelOption.provider + ':' + modelOption.name} value={modelOption.name}>
             {modelOption.label}
           </option>
         ))}
@@ -89,10 +91,6 @@ interface BaseChatProps {
   enhancePrompt?: () => void;
 }
 
-function getFreeModels(models) {
-  return models.filter(m => Number(m.pricing.prompt) + Number(m.pricing.completion) === 0);
-}
-
 export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
   (
     {
@@ -119,7 +117,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
   ) => {
     const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
     const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
-    const [models, setModels] = useState<ModelInfo[]>(MODEL_LIST);
 
     useEffect(() => {
       // Load API keys from cookies on component mount
@@ -138,34 +135,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       }
     }, []);
 
-    useEffect(() => {
-      fetchModels();
-    }, []);
-
-    const fetchModels = async () => {
-      try {
-        const response = await fetch('/api/openrouter-models');
-        const data = await response.json();
-        if (data.models) {
-          setModels(data.models);
-          const models = data.models;
-          if (!models.find(m => m.id === model)) {
-            setModel(models[0]?.id || '');
-          }
-          setModels([...(MODEL_LIST.filter(m => m.provider !== 'OpenRouter')),
-            ...models.sort((a, b) => a.name.localeCompare(b.name)).map(m => ({
-                name: m.id,
-                label: `${m.name} - in:$${(m.pricing.prompt * 1_000_000).toFixed(
-            2)} out:$${(m.pricing.completion * 1_000_000).toFixed(2)} - context ${Math.floor(
-                  m.context_length / 1000)}k`,
-                provider: 'OpenRouter'
-              }))])
-        }
-      } catch (error) {
-        console.error('Error fetching models:', error);
-      }
-    };
-
     const updateApiKey = (provider: string, key: string) => {
       try {
         const updatedApiKeys = { ...apiKeys, [provider]: key };
@@ -181,8 +150,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         console.error('Error saving API keys to cookies:', error);
       }
     };
-
-
 
     return (
       <div
@@ -231,7 +198,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 <ModelSelector
                   model={model}
                   setModel={setModel}
-                  modelList={models}
+                  modelList={MODEL_LIST}
                   provider={provider}
                   setProvider={setProvider}
                   providerList={providerList}
