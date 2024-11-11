@@ -51,6 +51,9 @@ const ModelSelector = ({ model, setModel, provider, setProvider, modelList, prov
         <option key="OpenAILike" value="OpenAILike">
           OpenAILike
         </option>
+        <option key="LMStudio" value="LMStudio">
+          LMStudio
+        </option>
       </select>
       <select
         key={provider}
