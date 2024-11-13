@@ -26,14 +26,15 @@ const EXAMPLE_PROMPTS = [
 
 const GitHubBadge = () => {
   return (
-    <div className="text-center my-4">
-      <h3 className="text-xl font-semibold mb-2">2. Contribute to oTToDev/Bolt.New</h3>
-      <a
-        href="https://github.com/coleam00/bolt.new-any-llm"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center space-x-4"
-      >
+    <a
+      href="https://github.com/coleam00/bolt.new-any-llm"
+      target="_blank"
+      rel="noopener noreferrer"
+      className=""
+    >
+      <div className="text-center my-4">
+        <h3 className="text-xl font-semibold mb-2">2. Contribute to oTToDev/Bolt.New</h3>
+        <div className="inline-flex items-center space-x-4">
         <img
           src="https://img.shields.io/github/stars/coleam00/bolt.new-any-llm?style=social"
           alt="GitHub stars"
@@ -43,9 +44,11 @@ const GitHubBadge = () => {
           src="https://img.shields.io/github/forks/coleam00/bolt.new-any-llm?style=social"
           alt="GitHub forks"
         />
-      </a>
+        </div>
     </div>
-  );
+    </a>
+)
+  ;
 };
 
 const ModelSelector = ({ model, setModel, provider, setProvider, modelList, providerList }) => {
