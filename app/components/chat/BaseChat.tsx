@@ -49,7 +49,6 @@ const GitHubBadge = () => {
 };
 
 const ModelSelector = ({ model, setModel, provider, setProvider, modelList, providerList }) => {
-  console.log(model, setModel, provider, setProvider, modelList, providerList);
   return (
     <div className="mb-2 flex gap-2">
       <select
@@ -133,7 +132,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     },
     ref
   ) => {
-    console.log(provider);
     const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
     const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
     const [modelList, setModelList] = useState(MODEL_LIST);
@@ -334,16 +332,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
             Check latest updates and tutorials below
           </p>
-          <iframe
-            width="300" // Make iframe responsive
-            height="200"
-            src="https://www.youtube.com/embed/videoseries?si=AnWjcPIkSpNbohvB&amp;list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          ></iframe>
+          <a target="_blank" href="https://www.youtube.com/playlist?list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"><img src="http://i3.ytimg.com/vi/-VkGI-cUaWw/hqdefault.jpg"/></a>
         </span>
                   </div>
 

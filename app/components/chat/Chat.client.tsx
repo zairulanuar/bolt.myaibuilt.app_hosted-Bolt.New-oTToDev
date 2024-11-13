@@ -96,7 +96,7 @@ export const ChatImpl = memo(({ initialMessages, storeMessageHistory }: ChatProp
     },
     onError: (error) => {
       logger.error('Request failed\n\n', error);
-      toast.error('There was an error processing your request');
+      toast.error('There was an error processing your request: ' + error.message ? error.message : "No details were returned");
     },
     onFinish: () => {
       logger.debug('Finished streaming');
