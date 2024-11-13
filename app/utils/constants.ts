@@ -232,10 +232,10 @@ async function getLMStudioModels(): Promise<ModelInfo[]> {
 
 
 
-async function initializeModelList(): Promise<void> {
+async function initializeModelList(): Promise<ModelInfo[]> {
   MODEL_LIST = [...(await Promise.all(
     PROVIDER_LIST.filter(p => !!p.getDynamicModels).map(p => p.getDynamicModels()))).flat(), ...staticModels];
+  return MODEL_LIST;
 }
 
-initializeModelList().then();
 export { getOllamaModels, getOpenAILikeModels, getLMStudioModels, initializeModelList, getOpenRouterModels, PROVIDER_LIST };

@@ -7,7 +7,7 @@ import { Menu } from '~/components/sidebar/Menu.client';
 import { IconButton } from '~/components/ui/IconButton';
 import { Workbench } from '~/components/workbench/Workbench.client';
 import { classNames } from '~/utils/classNames';
-import { MODEL_LIST, DEFAULT_PROVIDER, PROVIDER_LIST, ProviderInfo } from '~/utils/constants';
+import { MODEL_LIST, DEFAULT_PROVIDER, PROVIDER_LIST, ProviderInfo, initializeModelList } from '~/utils/constants';
 import { Messages } from './Messages.client';
 import { SendButton } from './SendButton.client';
 import { useState } from 'react';
@@ -24,9 +24,8 @@ const EXAMPLE_PROMPTS = [
   { text: 'How do I center a div?' },
 ];
 
-const providerList = PROVIDER_LIST;
-
 const ModelSelector = ({ model, setModel, provider, setProvider, modelList, providerList }) => {
+  console.log(model, setModel, provider, setProvider, modelList, providerList);
   return (
     <div className="mb-2 flex gap-2">
       <select
@@ -112,6 +111,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     console.log(provider);
     const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
     const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
+    const [modelList, setModelList] = useState(MODEL_LIST);
+
+
 
     useEffect(() => {
       // Load API keys from cookies on component mount
@@ -128,6 +130,10 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         // Clear invalid cookie data
         Cookies.remove('apiKeys');
       }
+
+      initializeModelList().then(modelList => {
+        setModelList(modelList);
+      });
     }, []);
 
     const updateApiKey = (provider: string, key: string) => {
@@ -191,12 +197,13 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 })}
               >
                 <ModelSelector
+                  key={provider?.name + ':' + modelList.length}
                   model={model}
                   setModel={setModel}
-                  modelList={MODEL_LIST}
+                  modelList={modelList}
                   provider={provider}
                   setProvider={setProvider}
-                  providerList={providerList}
+                  providerList={PROVIDER_LIST}
                 />
                 {provider &&
                   <APIKeyManager
