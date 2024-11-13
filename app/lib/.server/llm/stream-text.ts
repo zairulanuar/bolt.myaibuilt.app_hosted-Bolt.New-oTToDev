@@ -43,8 +43,8 @@ function extractPropertiesFromMessage(message: Message): { model: string; provid
 }
 
 export function streamText(
-  messages: Messages, 
-  env: Env, 
+  messages: Messages,
+  env: Env,
   options?: StreamingOptions,
   apiKeys?: Record<string, string>
 ) {
