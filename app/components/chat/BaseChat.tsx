@@ -21,8 +21,32 @@ const EXAMPLE_PROMPTS = [
   { text: 'Build a simple blog using Astro' },
   { text: 'Create a cookie consent form using Material UI' },
   { text: 'Make a space invaders game' },
-  { text: 'How do I center a div?' },
+  { text: 'How do I center a div?' }
 ];
+
+const GitHubBadge = () => {
+  return (
+    <div className="text-center my-4">
+      <h3 className="text-xl font-semibold mb-2">Contribute to oTToDev/Bolt.New</h3>
+      <a
+        href="https://github.com/coleam00/bolt.new-any-llm"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center space-x-4"
+      >
+        <img
+          src="https://img.shields.io/github/stars/coleam00/bolt.new-any-llm?style=social"
+          alt="GitHub stars"
+          className="mr-2"
+        />
+        <img
+          src="https://img.shields.io/github/forks/coleam00/bolt.new-any-llm?style=social"
+          alt="GitHub forks"
+        />
+      </a>
+    </div>
+  );
+};
 
 const ModelSelector = ({ model, setModel, provider, setProvider, modelList, providerList }) => {
   console.log(model, setModel, provider, setProvider, modelList, providerList);
@@ -47,6 +71,7 @@ const ModelSelector = ({ model, setModel, provider, setProvider, modelList, prov
         key={provider?.name}
         value={model}
         onChange={(e) => setModel(e.target.value)}
+        style={{maxWidth: "70%"}}
         className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all"
       >
         {[...modelList]
@@ -104,15 +129,14 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       sendMessage,
       handleInputChange,
       enhancePrompt,
-      handleStop,
+      handleStop
     },
-    ref,
+    ref
   ) => {
     console.log(provider);
     const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
     const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
     const [modelList, setModelList] = useState(MODEL_LIST);
-
 
 
     useEffect(() => {
@@ -145,7 +169,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           expires: 30, // 30 days
           secure: true, // Only send over HTTPS
           sameSite: 'strict', // Protect against CSRF
-          path: '/', // Accessible across the site
+          path: '/' // Accessible across the site
         });
       } catch (error) {
         console.error('Error saving API keys to cookies:', error);
@@ -157,7 +181,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         ref={ref}
         className={classNames(
           styles.BaseChat,
-          'relative flex h-full w-full overflow-hidden bg-bolt-elements-background-depth-1',
+          'relative flex h-full w-full overflow-hidden bg-bolt-elements-background-depth-1'
         )}
         data-chat-visible={showChat}
       >
@@ -165,18 +189,21 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         <div ref={scrollRef} className="flex overflow-y-auto w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
-              <div id="intro" className="mt-[26vh] max-w-chat mx-auto text-center">
+              <div id="intro" className="mt-[11vh] max-w-chat mx-auto text-center">
                 <h1 className="text-6xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
-                  Where ideas begin
+                  Welcome to <a src="https://github.com/coleam00/bolt.new-any-llm">Open Source Bolt.New/oTToDev</a>
                 </h1>
                 <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-                  Bring ideas to life in seconds or get help on existing projects.
+                  A community-driven effort to build the best full-stack JavaScript AI development tool.
+                  Hosted by <a style={{color: "blue"}} href="https://www.youtube.com/channel/UCLIo-9WnXvQcXfXomQvYSOg/">Eduards
+                  Ruzga 🔗</a>
                 </p>
+                <GitHubBadge/>
               </div>
             )}
             <div
               className={classNames('pt-6 px-6', {
-                'h-full flex flex-col': chatStarted,
+                'h-full flex flex-col': chatStarted
               })}
             >
               <ClientOnly>
@@ -192,9 +219,11 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 }}
               </ClientOnly>
               <div
-                className={classNames('bg-bolt-elements-background-depth-2 border-y border-bolt-elements-borderColor relative w-full max-w-chat mx-auto z-prompt', {
-                  'sticky bottom-0': chatStarted,
-                })}
+                className={classNames(
+                  'bg-bolt-elements-background-depth-2 border-y border-bolt-elements-borderColor relative w-full max-w-chat mx-auto z-prompt',
+                  {
+                    'sticky bottom-0': chatStarted
+                  })}
               >
                 <ModelSelector
                   key={provider?.name + ':' + modelList.length}
@@ -213,7 +242,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   />}
                 <div
                   className={classNames(
-                    'shadow-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background backdrop-filter backdrop-blur-[8px] rounded-lg overflow-hidden transition-all',
+                    'shadow-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background backdrop-filter backdrop-blur-[8px] rounded-lg overflow-hidden transition-all'
                   )}
                 >
                   <textarea
@@ -236,7 +265,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     }}
                     style={{
                       minHeight: TEXTAREA_MIN_HEIGHT,
-                      maxHeight: TEXTAREA_MAX_HEIGHT,
+                      maxHeight: TEXTAREA_MAX_HEIGHT
                     }}
                     placeholder="How can Bolt help you today?"
                     translate="no"
@@ -265,13 +294,14 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                         className={classNames('transition-all', {
                           'opacity-100!': enhancingPrompt,
                           'text-bolt-elements-item-contentAccent! pr-1.5 enabled:hover:bg-bolt-elements-item-backgroundAccent!':
-                            promptEnhanced,
+                          promptEnhanced
                         })}
                         onClick={() => enhancePrompt?.()}
                       >
                         {enhancingPrompt ? (
                           <>
-                            <div className="i-svg-spinners:90-ring-with-bg text-bolt-elements-loader-progress text-xl animate-spin"></div>
+                            <div
+                              className="i-svg-spinners:90-ring-with-bg text-bolt-elements-loader-progress text-xl animate-spin"></div>
                             <div className="ml-1.5">Enhancing prompt...</div>
                           </>
                         ) : (
@@ -284,7 +314,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     </div>
                     {input.length > 3 ? (
                       <div className="text-xs text-bolt-elements-textTertiary">
-                        Use <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Shift</kbd> +{' '}
+                        Use <kbd
+                        className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Shift</kbd> +{' '}
                         <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Return</kbd> for
                         a new line
                       </div>
@@ -295,29 +326,53 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               </div>
             </div>
             {!chatStarted && (
-              <div id="examples" className="relative w-full max-w-xl mx-auto mt-8 flex justify-center">
-                <div className="flex flex-col space-y-2 [mask-image:linear-gradient(to_bottom,black_0%,transparent_180%)] hover:[mask-image:none]">
-                  {EXAMPLE_PROMPTS.map((examplePrompt, index) => {
-                    return (
-                      <button
-                        key={index}
-                        onClick={(event) => {
-                          sendMessage?.(event, examplePrompt.text);
-                        }}
-                        className="group flex items-center w-full gap-2 justify-center bg-transparent text-bolt-elements-textTertiary hover:text-bolt-elements-textPrimary transition-theme"
-                      >
-                        {examplePrompt.text}
-                        <div className="i-ph:arrow-bend-down-left" />
-                      </button>
-                    );
-                  })}
+              <div id="examples" className="relative w-full max-w-xl mx-auto mt-8 flex justify-center mb-8">
+                <div className="flex w-full max-w-3xl mx-auto mt-8">
+                  {/* Video Section */}
+                  <div className="w-1/2 flex justify-center pr-4 mb-8">
+        <span>
+          <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
+            Check latest updates and tutorials below
+          </p>
+          <iframe
+            width="300" // Make iframe responsive
+            height="200"
+            src="https://www.youtube.com/embed/videoseries?si=AnWjcPIkSpNbohvB&amp;list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
+        </span>
+                  </div>
+
+                  {/* Options Section */}
+                  <div className="w-1/2 flex flex-col space-y-2 pl-4 [mask-image:linear-gradient(to_bottom,black_0%,transparent_180%)] hover:[mask-image:none]">
+                    {EXAMPLE_PROMPTS.map((examplePrompt, index) => {
+                      return (
+                        <button
+                          key={index}
+                          onClick={(event) => {
+                            sendMessage?.(event, examplePrompt.text);
+                          }}
+                          className="group flex items-center w-full gap-2 justify-center bg-transparent text-bolt-elements-textTertiary hover:text-bolt-elements-textPrimary transition-theme"
+                        >
+                          {examplePrompt.text}
+                          <div className="i-ph:arrow-bend-down-left" />
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             )}
           </div>
-          <ClientOnly>{() => <Workbench chatStarted={chatStarted} isStreaming={isStreaming} />}</ClientOnly>
+          <ClientOnly>{() => <Workbench chatStarted={chatStarted} isStreaming={isStreaming} />
+          }</ClientOnly>
         </div>
       </div>
-    );
-  },
+    )
+      ;
+  }
 );
