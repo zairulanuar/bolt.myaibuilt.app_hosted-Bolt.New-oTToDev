@@ -27,7 +27,7 @@ const EXAMPLE_PROMPTS = [
 const GitHubBadge = () => {
   return (
     <div className="text-center my-4">
-      <h3 className="text-xl font-semibold mb-2">Contribute to oTToDev/Bolt.New</h3>
+      <h3 className="text-xl font-semibold mb-2">2. Contribute to oTToDev/Bolt.New</h3>
       <a
         href="https://github.com/coleam00/bolt.new-any-llm"
         target="_blank"
@@ -187,18 +187,27 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         <div ref={scrollRef} className="flex overflow-y-auto w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
-              <div id="intro" className="mt-[11vh] max-w-chat mx-auto text-center">
+              <div id="intro" className="mt-[5vh] max-w-chat mx-auto text-center">
                 <h1 className="text-6xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
                   Welcome to <a src="https://github.com/coleam00/bolt.new-any-llm">Open Source Bolt.New/oTToDev</a>
                 </h1>
                 <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-                  A community-driven effort to build the best full-stack JavaScript AI development tool.
-                  Hosted by <a style={{color: "blue"}} href="https://www.youtube.com/channel/UCLIo-9WnXvQcXfXomQvYSOg/">Eduards
+                  1. A community-driven effort to build the best full-stack JavaScript AI development tool.
+                  Hosted by <a style={{ color: 'blue' }}
+                               href="https://www.youtube.com/channel/UCLIo-9WnXvQcXfXomQvYSOg/">Eduards
                   Ruzga 🔗</a>
                 </p>
-                <GitHubBadge/>
+                <GitHubBadge />
+                <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
+                  3. Not all APIs and LLMs are free. Check <a style={{ color: 'blue' }}
+                                                              href="https://github.com/cheahjs/free-llm-api-resources">this
+                  List of free LLM APIs</a>
+                </p>
+                <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
+                  4. Pick provider and model. Click on Get API Key. Add API key. Give it a try. Some models may fail. Work in progress!
+                </p>
               </div>
-            )}
+              )}
             <div
               className={classNames('pt-6 px-6', {
                 'h-full flex flex-col': chatStarted
