@@ -344,7 +344,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
             Check latest updates and tutorials below
           </p>
-          <a target="_blank" href="https://www.youtube.com/playlist?list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"><img src="http://i3.ytimg.com/vi/-VkGI-cUaWw/hqdefault.jpg"/></a>
+          <a target="_blank" href="https://www.youtube.com/playlist?list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"><img src="https://i3.ytimg.com/vi/J5iuC7Te2l4/hqdefault.jpg"/></a>
         </span>
                   </div>
 
