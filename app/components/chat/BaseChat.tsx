@@ -192,13 +192,10 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             {!chatStarted && (
               <div id="intro" className="mt-[5vh] max-w-chat mx-auto text-center">
                 <h1 className="text-6xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
-                  Welcome to <a src="https://github.com/coleam00/bolt.new-any-llm">Open Source Bolt.New/oTToDev</a>
+                  Build AI Apps with OttoDev Bolt
                 </h1>
-                <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-                  1. A community-driven effort to build the best full-stack JavaScript AI development tool.
-                  Hosted by <a style={{ color: 'blue' }}
-                               href="https://www.youtube.com/channel/UCLIo-9WnXvQcXfXomQvYSOg/">Eduards
-                  Ruzga 🔗</a>
+                <p className="text-xl text-bolt-elements-textSecondary mb-8 animate-fade-in">
+                  Your open-source, community-driven platform for creating AI-powered applications. Access both local and hosted free AI models instantly.
                 </p>
                 <GitHubBadge />
                 <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
@@ -207,10 +204,20 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   List of free LLM APIs</a>
                 </p>
                 <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-                  4. Pick provider and model. Click on Get API Key. Add API key. Give it a try. Some models may fail. Work in progress!
+                  4. Pick provider and model. Click on Get API Key. Add API key. Give it a try. Some models may fail.
+                  Work in progress!
                 </p>
+                <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
+                  5. Like work I am doing? <a style={{ color: 'blue' }} href="https://buymeacoffee.com/wonderwhyer">Buy me a coffee</a>, <a
+                  href="https://www.youtube.com/channel/@EduardsRuzga" style={{ color: 'blue' }}>subscribe to my channel</a> and give me a super
+                  thanks! Will be greatly appreciated!
+                </p>
+                <hr/>
+                <h2 className="text-4xl font-bold text-bolt-elements-textPrimary mt-8 mb-4 animate-fade-in">
+                  Free Hosted and Local AI Models for Developers
+                </h2>
               </div>
-              )}
+            )}
             <div
               className={classNames('pt-6 px-6', {
                 'h-full flex flex-col': chatStarted
@@ -344,12 +351,14 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
             Check latest updates and tutorials below
           </p>
-          <a target="_blank" href="https://www.youtube.com/playlist?list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"><img src="https://i3.ytimg.com/vi/J5iuC7Te2l4/hqdefault.jpg"/></a>
+          <a target="_blank" href="https://www.youtube.com/playlist?list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"><img
+            src="https://i3.ytimg.com/vi/J5iuC7Te2l4/hqdefault.jpg" /></a>
         </span>
                   </div>
 
                   {/* Options Section */}
-                  <div className="w-1/2 flex flex-col space-y-2 pl-4 [mask-image:linear-gradient(to_bottom,black_0%,transparent_180%)] hover:[mask-image:none]">
+                  <div
+                    className="w-1/2 flex flex-col space-y-2 pl-4 [mask-image:linear-gradient(to_bottom,black_0%,transparent_180%)] hover:[mask-image:none]">
                     {EXAMPLE_PROMPTS.map((examplePrompt, index) => {
                       return (
                         <button
