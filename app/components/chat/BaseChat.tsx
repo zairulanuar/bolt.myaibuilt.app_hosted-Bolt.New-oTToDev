@@ -209,7 +209,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   Work in progress!
                 </p>
                 <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-                  5. Like work I am doing? <a style={{ color: 'blue' }} href="https://buymeacoffee.com/wonderwhyer">Buy me a coffee</a>, <a
+                  5. Like work I am doing? <a style={{ color: 'blue' }} href="https://buymeacoffee.com/wonderwhyer">Buy me a coffee</a> or <a
                   href="https://www.youtube.com/channel/@EduardsRuzga" style={{ color: 'blue' }}>subscribe to my channel</a> and give me a super
                   thanks! Will be greatly appreciated!
                 </p>
