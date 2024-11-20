@@ -58,7 +58,11 @@ const PROVIDER_LIST: ProviderInfo[] = [
     name: 'Google',
     staticModels: [
       { name: 'gemini-1.5-flash-latest', label: 'Gemini 1.5 Flash', provider: 'Google' },
-      { name: 'gemini-1.5-pro-latest', label: 'Gemini 1.5 Pro', provider: 'Google' }
+      { name: 'gemini-1.5-flash-002', label: 'Gemini 1.5 Flash-002', provider: 'Google' },
+      { name: 'gemini-1.5-flash-8b', label: 'Gemini 1.5 Flash-8b', provider: 'Google' },
+      { name: 'gemini-1.5-pro-latest', label: 'Gemini 1.5 Pro', provider: 'Google' },
+      { name: 'gemini-1.5-pro-002', label: 'Gemini 1.5 Pro-002', provider: 'Google' },
+      { name: 'gemini-exp-1114', label: 'Gemini exp-1114', provider: 'Google' }
     ],
     getApiKeyLink: 'https://aistudio.google.com/app/apikey'
   }, {
@@ -71,7 +75,19 @@ const PROVIDER_LIST: ProviderInfo[] = [
       { name: 'llama-3.2-1b-preview', label: 'Llama 3.2 1b (Groq)', provider: 'Groq' }
     ],
     getApiKeyLink: 'https://console.groq.com/keys'
-  }, {
+  },
+  {
+    name: 'HuggingFace',
+    staticModels: [
+      { name: 'Qwen/Qwen2.5-Coder-32B-Instruct', label: 'Qwen2.5-Coder-32B-Instruct (HuggingFace)', provider: 'HuggingFace' },
+      { name: '01-ai/Yi-1.5-34B-Chat', label: 'Yi-1.5-34B-Chat (HuggingFace)', provider: 'HuggingFace' },
+      { name: 'codellama/CodeLlama-34b-Instruct-hf', label: 'CodeLlama-34b-Instruct (HuggingFace)', provider: 'HuggingFace' },
+      { name: 'NousResearch/Hermes-3-Llama-3.1-8B', label: 'Hermes-3-Llama-3.1-8B (HuggingFace)', provider: 'HuggingFace' }
+    ],
+    getApiKeyLink: 'https://huggingface.co/settings/tokens'
+  },
+  
+  {
     name: 'OpenAI',
     staticModels: [
       { name: 'gpt-4o-mini', label: 'GPT-4o Mini', provider: 'OpenAI' },
