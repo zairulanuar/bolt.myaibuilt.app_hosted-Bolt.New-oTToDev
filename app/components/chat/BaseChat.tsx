@@ -215,7 +215,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 </p>
                 <hr/>
                 <h2 className="text-4xl font-bold text-bolt-elements-textPrimary mt-8 mb-4 animate-fade-in">
-                  Free Hosted and Local AI Models for Developers
+                  Ready to Build? Get Started below!
                 </h2>
               </div>
             )}
