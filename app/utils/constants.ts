@@ -1,4 +1,5 @@
 import type { ModelInfo, OllamaApiResponse, OllamaModel } from './types';
+import type { ProviderInfo } from '~/types/model';
 
 export const WORK_DIR_NAME = 'project';
 export const WORK_DIR = `/home/${WORK_DIR_NAME}`;
@@ -6,16 +7,6 @@ export const MODIFICATIONS_TAG_NAME = 'bolt_file_modifications';
 export const MODEL_REGEX = /^\[Model: (.*?)\]\n\n/;
 export const PROVIDER_REGEX = /\[Provider: (.*?)\]\n\n/;
 export const DEFAULT_MODEL = 'claude-3-5-sonnet-latest';
-
-
-export type ProviderInfo = {
-  staticModels: ModelInfo[],
-  name: string,
-  getDynamicModels?: () => Promise<ModelInfo[]>,
-  getApiKeyLink?: string,
-  labelForGetApiKey?: string,
-  icon?:string,
-};
 
 const PROVIDER_LIST: ProviderInfo[] = [
   {
@@ -234,7 +225,10 @@ async function getLMStudioModels(): Promise<ModelInfo[]> {
 
 async function initializeModelList(): Promise<ModelInfo[]> {
   MODEL_LIST = [...(await Promise.all(
-    PROVIDER_LIST.filter(p => !!p.getDynamicModels).map(p => p.getDynamicModels()))).flat(), ...staticModels];
+    PROVIDER_LIST
+      .filter((p): p is ProviderInfo & { getDynamicModels: () => Promise<ModelInfo[]> } => !!p.getDynamicModels)
+      .map(p => p.getDynamicModels())))
+    .flat(), ...staticModels];
   return MODEL_LIST;
 }
 
