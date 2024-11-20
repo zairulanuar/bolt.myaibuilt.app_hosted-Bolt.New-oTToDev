@@ -21,12 +21,12 @@ export function Header() {
       <div className="flex items-center gap-2 z-logo text-bolt-elements-textPrimary cursor-pointer">
         <div className="i-ph:sidebar-simple-duotone text-xl" />
         <a href="/" className="text-2xl font-semibold text-accent flex items-center">
-          <span style="
-              font-weight: 900;
-              margin-right: 6px;
-              font-size: 1em;
-              padding-bottom: 2px;
-          ">oTToDev - </span>
+          <span style={{
+            fontWeight: "900",
+            marginRight: "6px",
+            fontSize: "1em",
+            paddingBottom: "2px",
+          }}>oTToDev - </span>
           <span className="i-bolt:logo-text?mask w-[46px] inline-block" />
         </a>
       </div>
