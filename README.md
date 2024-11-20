@@ -1,5 +1,5 @@
 This is a fork for my hosted version at
-https://bolt.myaibuilt.app/
+https://ottodev-bolt.myaibuilt.app/
 With small changes I need for hosting it
 
 Main Repository is oTToDev/Bolt.New here https://github.com/coleam00/bolt.new-any-llm as I joined efforts to contribute and work together with others there
