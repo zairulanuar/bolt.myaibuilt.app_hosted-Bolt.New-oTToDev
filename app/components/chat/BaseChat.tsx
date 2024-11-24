@@ -1,5 +1,7 @@
-// @ts-nocheck
-// Preventing TS checks with files presented in the video for a better presentation.
+/*
+ * @ts-nocheck
+ * Preventing TS checks with files presented in the video for a better presentation.
+ */
 import type { Message } from 'ai';
 import React, { type RefCallback, useEffect } from 'react';
 import { ClientOnly } from 'remix-utils/client-only';
@@ -7,7 +9,7 @@ import { Menu } from '~/components/sidebar/Menu.client';
 import { IconButton } from '~/components/ui/IconButton';
 import { Workbench } from '~/components/workbench/Workbench.client';
 import { classNames } from '~/utils/classNames';
-import { MODEL_LIST, DEFAULT_PROVIDER, PROVIDER_LIST, initializeModelList } from '~/utils/constants';
+import { MODEL_LIST, PROVIDER_LIST, initializeModelList } from '~/utils/constants';
 import { Messages } from './Messages.client';
 import { SendButton } from './SendButton.client';
 import { useState } from 'react';
@@ -25,6 +27,7 @@ const EXAMPLE_PROMPTS = [
   { text: 'How do I center a div?' }
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const GitHubBadge = () => {
   return (
     <a
@@ -52,19 +55,22 @@ const GitHubBadge = () => {
   ;
 };
 
-const ModelSelector = ({ model, setModel, provider, setProvider, modelList, providerList }) => {
+// @ts-ignore TODO: Introduce proper types
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const ModelSelector = ({ model, setModel, provider, setProvider, modelList, providerList, apiKeys }) => {
   return (
-    <div className="mb-2 flex gap-2">
+    <div className="mb-2 flex gap-2 flex-col sm:flex-row">
       <select
         value={provider?.name}
         onChange={(e) => {
-          setProvider(providerList.find((p) => p.name === e.target.value));
+          setProvider(providerList.find((p: ProviderInfo) => p.name === e.target.value));
+
           const firstModel = [...modelList].find((m) => m.provider == e.target.value);
           setModel(firstModel ? firstModel.name : '');
         }}
         className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all"
       >
-        {providerList.map((provider) => (
+        {providerList.map((provider: ProviderInfo) => (
           <option key={provider.name} value={provider.name}>
             {provider.name}
           </option>
@@ -74,8 +80,7 @@ const ModelSelector = ({ model, setModel, provider, setProvider, modelList, prov
         key={provider?.name}
         value={model}
         onChange={(e) => setModel(e.target.value)}
-        style={{ maxWidth: '70%' }}
-        className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all"
+        className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all lg:max-w-[70%] "
       >
         {[...modelList]
           .filter((e) => e.provider == provider?.name && e.name)
@@ -145,14 +150,17 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       // Load API keys from cookies on component mount
       try {
         const storedApiKeys = Cookies.get('apiKeys');
+
         if (storedApiKeys) {
           const parsedKeys = JSON.parse(storedApiKeys);
+
           if (typeof parsedKeys === 'object' && parsedKeys !== null) {
             setApiKeys(parsedKeys);
           }
         }
       } catch (error) {
         console.error('Error loading API keys from cookies:', error);
+
         // Clear invalid cookie data
         Cookies.remove('apiKeys');
       }
@@ -166,6 +174,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       try {
         const updatedApiKeys = { ...apiKeys, [provider]: key };
         setApiKeys(updatedApiKeys);
+
         // Save updated API keys to cookies with 30 day expiry and secure settings
         Cookies.set('apiKeys', JSON.stringify(updatedApiKeys), {
           expires: 30, // 30 days
@@ -183,23 +192,23 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         ref={ref}
         className={classNames(
           styles.BaseChat,
-          'relative flex h-full w-full overflow-hidden bg-bolt-elements-background-depth-1'
+          'relative flex flex-col lg:flex-row h-full w-full overflow-hidden bg-bolt-elements-background-depth-1'
         )}
         data-chat-visible={showChat}
       >
         <ClientOnly>{() => <Menu />}</ClientOnly>
-        <div ref={scrollRef} className="flex overflow-y-auto w-full h-full">
-          <div className={classNames(styles.Chat, 'flex flex-col flex-grow min-w-[var(--chat-min-width)] h-full')}>
+        <div ref={scrollRef} className="flex flex-col lg:flex-row overflow-y-auto w-full h-full">
+          <div className={classNames(styles.Chat, 'flex flex-col flex-grow lg:min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
-              <div id="intro" className="mt-[5vh] max-w-chat mx-auto text-center">
-                <h1 className="text-6xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
+              <div id="intro" className="mt-[5vh] max-w-chat mx-auto text-center px-4 lg:px-0">
+                <h1 className="text-3xl lg:text-6xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
                   Build AI Apps with OttoDev Bolt
                 </h1>
                 <p className="text-xl text-bolt-elements-textSecondary mb-8 animate-fade-in">
                   Your open-source, community-driven platform for creating AI-powered applications. Access both local and hosted free AI models instantly.
                 </p>
                 <GitHubBadge />
-                <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
+                <p className="text-md lg:text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
                   3. Not all APIs and LLMs are free. Check <a style={{ color: 'blue' }}
                                                               href="https://github.com/cheahjs/free-llm-api-resources">this
                   List of free LLM APIs</a>
@@ -220,7 +229,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               </div>
             )}
             <div
-              className={classNames('pt-6 px-6', {
+              className={classNames('pt-6 px-2 sm:px-6', {
                 'h-full flex flex-col': chatStarted
               })}
             >
@@ -229,7 +238,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   return chatStarted ? (
                     <Messages
                       ref={messageRef}
-                      className="flex flex-col w-full flex-1 max-w-chat px-4 pb-6 mx-auto z-1"
+                      className="flex flex-col w-full flex-1 max-w-chat pb-6 mx-auto z-1"
                       messages={messages}
                       isStreaming={isStreaming}
                     />
@@ -251,7 +260,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   provider={provider}
                   setProvider={setProvider}
                   providerList={PROVIDER_LIST}
+                  apiKeys={apiKeys}
                 />
+
                 {provider && (
                   <APIKeyManager
                     provider={provider}
@@ -259,6 +270,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     setApiKey={(key) => updateApiKey(provider.name, key)}
                   />
                 )}
+
                 <div
                   className={classNames(
                     'shadow-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background backdrop-filter backdrop-blur-[8px] rounded-lg overflow-hidden transition-all'
@@ -266,7 +278,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 >
                   <textarea
                     ref={textareaRef}
-                    className={`w-full pl-4 pt-4 pr-16 focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus resize-none text-md text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary bg-transparent transition-all`}
+                    className={`w-full pl-4 pt-4 pr-16 focus:outline-none focus:ring-0 focus:border-none focus:shadow-none resize-none text-md text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary bg-transparent transition-all`}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter') {
                         if (event.shiftKey) {
@@ -341,7 +353,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     ) : null}
                   </div>
                 </div>
-                <div className="bg-bolt-elements-background-depth-1 pb-6">{/* Ghost Element */}</div>
               </div>
             </div>
             {!chatStarted && (
