@@ -6,7 +6,7 @@ const GitHubBadge = () => {
       href="https://github.com/coleam00/bolt.new-any-llm"
       target="_blank"
       rel="noopener noreferrer"
-      className="block hover:opacity-90 transition-opacity"
+      className="block hover:opacity-90 transition-opacity h-full"
     >
       <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor h-full">
         <h3 className="text-lg font-semibold mb-3 text-bolt-elements-textPrimary">2. Contribute to oTToDev/Bolt.New</h3>
@@ -29,26 +29,29 @@ const GitHubBadge = () => {
 
 export const WelcomeIntro: React.FC = () => {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
-      <div className="text-center space-y-3 mb-6">
-        <h1 className="text-3xl lg:text-5xl font-bold text-bolt-elements-textPrimary animate-fade-in bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-          Build AI Apps with oTToDev Bolt
+    <div className="w-full mx-auto px-4 py-6 space-y-6">
+      <div className="text-center w-full mx-auto">
+        <h1 className="text-3xl lg:text-5xl font-bold text-bolt-elements-textPrimary animate-fade-in bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-6">
+          Build AI Apps with OttoDev Bolt
         </h1>
-        <p className="text-lg text-bolt-elements-textSecondary animate-fade-in">
-          1. A community-driven effort to build the best full-stack JavaScript AI development tool.
-          Hosted by{' '}
-          <a
-            href="https://www.youtube.com/channel/UCLIo-9WnXvQcXfXomQvYSOg/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:text-blue-600 transition-colors font-medium"
-          >
-            Eduards Ruzga 🔗
-          </a>
-        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full mx-auto">
+        <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor">
+          <p className="text-lg text-bolt-elements-textSecondary animate-fade-in">
+            1. A community-driven effort to build the best full-stack JavaScript AI development tool.
+            Hosted by{' '}
+            <a 
+              href="https://www.youtube.com/channel/UCLIo-9WnXvQcXfXomQvYSOg/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-600 transition-colors font-medium"
+            >
+              Eduards Ruzga 🔗
+            </a>
+          </p>
+        </div>
+
         <GitHubBadge />
 
         <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor">
@@ -56,7 +59,7 @@ export const WelcomeIntro: React.FC = () => {
             3. Check latest updates and tutorials
           </p>
           <div className="flex justify-center">
-            <a
+            <a 
               target="_blank"
               href="https://www.youtube.com/playlist?list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"
               className="hover:opacity-90 transition-opacity"
@@ -64,7 +67,7 @@ export const WelcomeIntro: React.FC = () => {
               <img
                 src="https://i3.ytimg.com/vi/J5iuC7Te2l4/hqdefault.jpg"
                 alt="Tutorial Playlist"
-                className="rounded-lg shadow-lg hover:shadow-xl transition-shadow w-full max-w-[300px]"
+                className="rounded-lg shadow-lg hover:shadow-xl transition-shadow w-full max-w-[200px]"
               />
             </a>
           </div>
@@ -73,7 +76,7 @@ export const WelcomeIntro: React.FC = () => {
         <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor">
           <p className="text-lg text-bolt-elements-textSecondary animate-fade-in">
             4. Not all APIs and LLMs are free. Check{' '}
-            <a
+            <a 
               href="https://github.com/cheahjs/free-llm-api-resources"
               target="_blank"
               rel="noopener noreferrer"
@@ -90,13 +93,11 @@ export const WelcomeIntro: React.FC = () => {
             Work in progress!
           </p>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor">
           <p className="text-lg text-bolt-elements-textSecondary animate-fade-in">
             6. Like work I am doing?{' '}
-            <a
+            <a 
               href="https://buymeacoffee.com/wonderwhyer"
               target="_blank"
               rel="noopener noreferrer"
@@ -116,12 +117,12 @@ export const WelcomeIntro: React.FC = () => {
             {' '}and give me a super thanks! Will be greatly appreciated!
           </p>
         </div>
+      </div>
 
-        <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor">
-          <h2 className="text-2xl font-bold text-bolt-elements-textPrimary text-center animate-fade-in bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Ready to Build? Get Started below!
-          </h2>
-        </div>
+      <div className="text-center w-full mx-auto pt-4">
+        <h2 className="text-2xl font-bold text-bolt-elements-textPrimary animate-fade-in bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+          Ready to Build? Get Started below!
+        </h2>
       </div>
     </div>
   );

@@ -173,7 +173,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         <div ref={scrollRef} className="flex flex-col lg:flex-row overflow-y-auto w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow lg:min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
-              <div id="intro" className="mt-[5vh] max-w-chat mx-auto text-center px-4 lg:px-0">
+              <div id="intro" style={{maxWidth: "74rem"}} className="mt-[5vh] mx-auto text-center px-4 lg:px-0">
                 <WelcomeIntro />
               </div>
             )}
