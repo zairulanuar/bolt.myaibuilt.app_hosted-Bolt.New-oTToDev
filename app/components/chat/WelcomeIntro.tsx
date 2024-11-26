@@ -32,7 +32,7 @@ export const WelcomeIntro: React.FC = () => {
     <div className="w-full mx-auto px-4 py-6 space-y-6">
       <div className="text-center w-full mx-auto">
         <h1 className="text-3xl lg:text-5xl font-bold text-bolt-elements-textPrimary animate-fade-in bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-6">
-          Build AI Apps with OttoDev Bolt
+          Build AI Apps with oTToDev Bolt
         </h1>
       </div>
 
@@ -41,7 +41,7 @@ export const WelcomeIntro: React.FC = () => {
           <p className="text-lg text-bolt-elements-textSecondary animate-fade-in">
             1. A community-driven effort to build the best full-stack JavaScript AI development tool.
             Hosted by{' '}
-            <a 
+            <a
               href="https://www.youtube.com/channel/UCLIo-9WnXvQcXfXomQvYSOg/"
               target="_blank"
               rel="noopener noreferrer"
@@ -59,7 +59,7 @@ export const WelcomeIntro: React.FC = () => {
             3. Check latest updates and tutorials
           </p>
           <div className="flex justify-center">
-            <a 
+            <a
               target="_blank"
               href="https://www.youtube.com/playlist?list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"
               className="hover:opacity-90 transition-opacity"
@@ -76,7 +76,7 @@ export const WelcomeIntro: React.FC = () => {
         <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor">
           <p className="text-lg text-bolt-elements-textSecondary animate-fade-in">
             4. Not all APIs and LLMs are free. Check{' '}
-            <a 
+            <a
               href="https://github.com/cheahjs/free-llm-api-resources"
               target="_blank"
               rel="noopener noreferrer"
@@ -97,7 +97,7 @@ export const WelcomeIntro: React.FC = () => {
         <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor">
           <p className="text-lg text-bolt-elements-textSecondary animate-fade-in">
             6. Like work I am doing?{' '}
-            <a 
+            <a
               href="https://buymeacoffee.com/wonderwhyer"
               target="_blank"
               rel="noopener noreferrer"
