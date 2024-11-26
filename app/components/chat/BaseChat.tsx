@@ -3,7 +3,7 @@
  * Preventing TS checks with files presented in the video for a better presentation.
  */
 import type { Message } from 'ai';
-import React, { type RefCallback, useEffect } from 'react';
+import React, { type RefCallback, useEffect, useState } from 'react';
 import { ClientOnly } from 'remix-utils/client-only';
 import { Menu } from '~/components/sidebar/Menu.client';
 import { IconButton } from '~/components/ui/IconButton';
@@ -12,20 +12,15 @@ import { classNames } from '~/utils/classNames';
 import { MODEL_LIST, PROVIDER_LIST, initializeModelList } from '~/utils/constants';
 import { Messages } from './Messages.client';
 import { SendButton } from './SendButton.client';
-import { useState } from 'react';
 import { APIKeyManager } from './APIKeyManager';
 import Cookies from 'js-cookie';
+import * as Tooltip from '@radix-ui/react-tooltip';
 
 import styles from './BaseChat.module.scss';
 import type { ProviderInfo } from '~/utils/types';
-
-const EXAMPLE_PROMPTS = [
-  { text: 'Build a todo app in React using Tailwind' },
-  { text: 'Build a simple blog using Astro' },
-  { text: 'Create a cookie consent form using Material UI' },
-  { text: 'Make a space invaders game' },
-  { text: 'How do I center a div?' }
-];
+import { ExportChatButton } from '~/components/chat/chatExportAndImport/ExportChatButton';
+import { ImportButtons } from '~/components/chat/chatExportAndImport/ImportButtons';
+import { ExamplePrompts } from '~/components/chat/ExamplePrompts';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const GitHubBadge = () => {
@@ -39,20 +34,20 @@ const GitHubBadge = () => {
       <div className="text-center my-4">
         <h3 className="text-xl font-semibold mb-2">2. Contribute to oTToDev/Bolt.New</h3>
         <div className="inline-flex items-center space-x-4">
-        <img
-          src="https://img.shields.io/github/stars/coleam00/bolt.new-any-llm?style=social"
-          alt="GitHub stars"
-          className="mr-2"
-        />
-        <img
-          src="https://img.shields.io/github/forks/coleam00/bolt.new-any-llm?style=social"
-          alt="GitHub forks"
-        />
+          <img
+            src="https://img.shields.io/github/stars/coleam00/bolt.new-any-llm?style=social"
+            alt="GitHub stars"
+            className="mr-2"
+          />
+          <img
+            src="https://img.shields.io/github/forks/coleam00/bolt.new-any-llm?style=social"
+            alt="GitHub forks"
+          />
         </div>
-    </div>
+      </div>
     </a>
-)
-  ;
+  )
+    ;
 };
 
 // @ts-ignore TODO: Introduce proper types
@@ -104,6 +99,7 @@ interface BaseChatProps {
   chatStarted?: boolean;
   isStreaming?: boolean;
   messages?: Message[];
+  description?: string;
   enhancingPrompt?: boolean;
   promptEnhanced?: boolean;
   input?: string;
@@ -115,6 +111,8 @@ interface BaseChatProps {
   sendMessage?: (event: React.UIEvent, messageInput?: string) => void;
   handleInputChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   enhancePrompt?: () => void;
+  importChat?: (description: string, messages: Message[]) => Promise<void>;
+  exportChat?: () => void;
 }
 
 export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
@@ -137,7 +135,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       sendMessage,
       handleInputChange,
       enhancePrompt,
-      handleStop
+      handleStop,
+      importChat,
+      exportChat,
     },
     ref
   ) => {
@@ -187,7 +187,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       }
     };
 
-    return (
+    const baseChat = (
       <div
         ref={ref}
         className={classNames(
@@ -342,6 +342,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           </>
                         )}
                       </IconButton>
+                      {chatStarted && <ClientOnly>{() => <ExportChatButton exportChat={exportChat} />}</ClientOnly>}
                     </div>
                     {input.length > 3 ? (
                       <div className="text-xs text-bolt-elements-textTertiary">
@@ -355,47 +356,15 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 </div>
               </div>
             </div>
-            {!chatStarted && (
-              <div id="examples" className="relative w-full max-w-xl mx-auto mt-8 flex justify-center mb-8">
-                <div className="flex w-full max-w-3xl mx-auto mt-8">
-                  {/* Video Section */}
-                  <div className="w-1/2 flex justify-center pr-4 mb-8">
-        <span>
-          <p className="text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-            Check latest updates and tutorials below
-          </p>
-          <a target="_blank" href="https://www.youtube.com/playlist?list=PL66Y6GLTMgUOZM9G7GwWqcUgCAKrx5TmI"><img
-            src="https://i3.ytimg.com/vi/J5iuC7Te2l4/hqdefault.jpg" /></a>
-        </span>
-                  </div>
-
-                  {/* Options Section */}
-                  <div
-                    className="w-1/2 flex flex-col space-y-2 pl-4 [mask-image:linear-gradient(to_bottom,black_0%,transparent_180%)] hover:[mask-image:none]">
-                    {EXAMPLE_PROMPTS.map((examplePrompt, index) => {
-                      return (
-                        <button
-                          key={index}
-                          onClick={(event) => {
-                            sendMessage?.(event, examplePrompt.text);
-                          }}
-                          className="group flex items-center w-full gap-2 justify-center bg-transparent text-bolt-elements-textTertiary hover:text-bolt-elements-textPrimary transition-theme"
-                        >
-                          {examplePrompt.text}
-                          <div className="i-ph:arrow-bend-down-left" />
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            )}
+            {!chatStarted && ImportButtons(importChat)}
+            {!chatStarted && ExamplePrompts(sendMessage)}
           </div>
           <ClientOnly>{() => <Workbench chatStarted={chatStarted} isStreaming={isStreaming} />
           }</ClientOnly>
         </div>
       </div>
-    )
-      ;
-  }
+    );
+
+    return <Tooltip.Provider delayDuration={200}>{baseChat}</Tooltip.Provider>;
+  },
 );
