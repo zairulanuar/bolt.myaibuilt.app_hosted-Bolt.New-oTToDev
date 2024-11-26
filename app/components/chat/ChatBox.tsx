@@ -7,47 +7,9 @@ import { SendButton } from '~/components/chat/SendButton.client';
 import { IconButton } from '~/components/ui/IconButton';
 import { ExportChatButton } from '~/components/chat/chatExportAndImport/ExportChatButton';
 import { ClientOnly } from 'remix-utils/client-only';
+import { ModelSelector } from '~/components/chat/ModelSelector';
 
 const TEXTAREA_MIN_HEIGHT = 76;
-
-// @ts-ignore TODO: Introduce proper types
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ModelSelector = ({ model, setModel, provider, setProvider, modelList, providerList, apiKeys }) => {
-  return (
-    <div className="mb-2 flex gap-2 flex-col sm:flex-row">
-      <select
-        value={provider?.name}
-        onChange={(e) => {
-          setProvider(providerList.find((p: ProviderInfo) => p.name === e.target.value));
-
-          const firstModel = [...modelList].find((m) => m.provider == e.target.value);
-          setModel(firstModel ? firstModel.name : '');
-        }}
-        className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all"
-      >
-        {providerList.map((provider: ProviderInfo) => (
-          <option key={provider.name} value={provider.name}>
-            {provider.name}
-          </option>
-        ))}
-      </select>
-      <select
-        key={provider?.name}
-        value={model}
-        onChange={(e) => setModel(e.target.value)}
-        className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all lg:max-w-[70%] "
-      >
-        {[...modelList]
-          .filter((e) => e.provider == provider?.name && e.name)
-          .map((modelOption) => (
-            <option key={modelOption.name} value={modelOption.name}>
-              {modelOption.label}
-            </option>
-          ))}
-      </select>
-    </div>
-  );
-};
 
 export interface ChatBoxProps {
   chatStarted: boolean;
@@ -72,26 +34,26 @@ export interface ChatBoxProps {
 }
 
 export function ChatBox({
-                   chatStarted,
-                   provider,
-                   modelList,
-                   model,
-                   setModel,
-                   setProvider,
-                   apiKeys,
-                   updateApiKey,
-                   textareaRef,
-                   sendMessage,
-                   input,
-                   handleInputChange,
-                   textAreaMaxHeight,
-                   isStreaming,
-                   handleStop,
-                   enhancingPrompt,
-                   promptEnhanced,
-                   enhancePrompt,
-                   exportChat,
-                 }: ChatBoxProps) {
+  chatStarted,
+  provider,
+  modelList,
+  model,
+  setModel,
+  setProvider,
+  apiKeys,
+  updateApiKey,
+  textareaRef,
+  sendMessage,
+  input,
+  handleInputChange,
+  textAreaMaxHeight,
+  isStreaming,
+  handleStop,
+  enhancingPrompt,
+  promptEnhanced,
+  enhancePrompt,
+  exportChat,
+}: ChatBoxProps) {
   return (
     <div
       className={classNames(
@@ -109,7 +71,6 @@ export function ChatBox({
         provider={provider}
         setProvider={setProvider}
         providerList={PROVIDER_LIST}
-        apiKeys={apiKeys}
       />
 
       {provider && (
@@ -136,7 +97,9 @@ export function ChatBox({
 
               event.preventDefault();
 
-              sendMessage && sendMessage(event);
+              if (sendMessage) {
+                sendMessage(event);
+              }
             }
           }}
           value={input}
@@ -161,7 +124,9 @@ export function ChatBox({
                   return;
                 }
 
-                sendMessage && sendMessage(event);
+                if (sendMessage) {
+                  sendMessage(event);
+                }
               }}
             />
           )}
@@ -174,7 +139,7 @@ export function ChatBox({
               className={classNames('transition-all', {
                 'opacity-100!': enhancingPrompt,
                 'text-bolt-elements-item-contentAccent! pr-1.5 enabled:hover:bg-bolt-elements-item-backgroundAccent!':
-                promptEnhanced,
+                  promptEnhanced,
               })}
               onClick={() => enhancePrompt?.()}
             >
