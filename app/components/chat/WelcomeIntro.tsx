@@ -39,8 +39,7 @@ export const WelcomeIntro: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full mx-auto">
         <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor">
           <p className="text-lg text-bolt-elements-textSecondary animate-fade-in">
-            1. A community-driven effort to build the best full-stack JavaScript AI development tool.
-            Hosted by{' '}
+            1. A community-driven effort to build the best full-stack JavaScript AI development tool. Hosted by{' '}
             <a
               href="https://www.youtube.com/channel/UCLIo-9WnXvQcXfXomQvYSOg/"
               target="_blank"
@@ -89,8 +88,8 @@ export const WelcomeIntro: React.FC = () => {
 
         <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor">
           <p className="text-lg text-bolt-elements-textSecondary animate-fade-in">
-            5. Pick provider and model. Click on Get API Key. Add API key. Give it a try. Some models may fail.
-            Work in progress!
+            5. Pick provider and model. Click on Get API Key. Add API key. Give it a try. Some models may fail. Work in
+            progress!
           </p>
         </div>
 
@@ -104,8 +103,8 @@ export const WelcomeIntro: React.FC = () => {
               className="text-blue-500 hover:text-blue-600 transition-colors font-medium"
             >
               Buy me a coffee
-            </a>
-            {' '}or{' '}
+            </a>{' '}
+            or{' '}
             <a
               href="https://www.youtube.com/channel/@EduardsRuzga"
               target="_blank"
@@ -113,8 +112,8 @@ export const WelcomeIntro: React.FC = () => {
               className="text-blue-500 hover:text-blue-600 transition-colors font-medium"
             >
               subscribe to my channel
-            </a>
-            {' '}and give me a super thanks! Will be greatly appreciated!
+            </a>{' '}
+            and give me a super thanks! Will be greatly appreciated!
           </p>
         </div>
       </div>
@@ -124,26 +123,6 @@ export const WelcomeIntro: React.FC = () => {
           Ready to Build? Get Started below!
         </h2>
       </div>
-    </div>
-  );
-};
-
-interface StepCardProps {
-  number: number;
-  title: string;
-  description: string;
-}
-
-const StepCard: React.FC<StepCardProps> = ({ number, title, description }) => {
-  return (
-    <div className="p-4 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-background-depth-2 hover:shadow-lg transition-all duration-200">
-      <div className="flex items-center space-x-3 mb-3">
-        <div className="w-7 h-7 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
-          {number}
-        </div>
-        <h3 className="text-lg font-semibold text-bolt-elements-textPrimary">{title}</h3>
-      </div>
-      <p className="text-bolt-elements-textSecondary text-sm">{description}</p>
     </div>
   );
 };

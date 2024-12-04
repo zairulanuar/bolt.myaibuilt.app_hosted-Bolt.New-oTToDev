@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import type { Message } from 'ai';
 import { toast } from 'react-toastify';
-import { MAX_FILES, isBinaryFile, shouldIncludeFile } from '../../utils/fileUtils';
-import { createChatFromFolder } from '../../utils/folderImport';
+import { MAX_FILES, isBinaryFile, shouldIncludeFile } from '~/utils/fileUtils';
+import { createChatFromFolder } from '~/utils/folderImport';
 
 interface ImportFolderButtonProps {
   className?: string;
@@ -17,13 +17,14 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
 
     if (allFiles.length > MAX_FILES) {
       toast.error(
-        `This folder contains ${allFiles.length.toLocaleString()} files. This product is not yet optimized for very large projects. Please select a folder with fewer than ${MAX_FILES.toLocaleString()} files.`
+        `This folder contains ${allFiles.length.toLocaleString()} files. This product is not yet optimized for very large projects. Please select a folder with fewer than ${MAX_FILES.toLocaleString()} files.`,
       );
       return;
     }
 
     const folderName = allFiles[0]?.webkitRelativePath.split('/')[0] || 'Unknown Folder';
     setIsLoading(true);
+
     const loadingToast = toast.loading(`Importing ${folderName}...`);
 
     try {
@@ -56,11 +57,11 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
       }
 
       const { userMessage, assistantMessage } = await createChatFromFolder(textFiles, binaryFilePaths, folderName);
-      
+
       if (importChat) {
         await importChat(folderName, [userMessage, assistantMessage]);
       }
-      
+
       toast.success('Folder imported successfully');
     } catch (error) {
       console.error('Failed to import folder:', error);
@@ -91,7 +92,7 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
         className={className}
         disabled={isLoading}
       >
-        <div className="i-ph:folder-simple-upload" />
+        <div className="i-ph:upload-simple" />
         {isLoading ? 'Importing...' : 'Import Folder'}
       </button>
     </>
