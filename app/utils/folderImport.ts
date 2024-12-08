@@ -5,7 +5,7 @@ export const createChatFromFolder = async (
   files: File[],
   binaryFiles: string[],
   folderName: string,
-): Promise<{ userMessage: Message; assistantMessage: Message }> => {
+): Promise<Message[]> => {
   const fileArtifacts = await Promise.all(
     files.map(async (file) => {
       return new Promise<string>((resolve, reject) => {
@@ -37,17 +37,27 @@ ${content}
       ? `\n\nSkipped ${binaryFiles.length} binary files:\n${binaryFiles.map((f) => `- ${f}`).join('\n')}`
       : '';
 
-  const assistantMessage: Message = {
-    role: 'assistant',
-    content: `I've imported the contents of the "${folderName}" folder.${binaryFilesMessage}
+  const assistantMessages: Message[] = [
+    {
+      role: 'assistant',
+      content: `I've imported the contents of the "${folderName}" folder.${binaryFilesMessage}
 
 <boltArtifact id="imported-files" title="Imported Files">
 ${fileArtifacts.join('\n\n')}
+</boltArtifact>`,
+      id: generateId(),
+      createdAt: new Date(),
+    },
+    {
+      role: 'assistant',
+      content: `
+<boltArtifact id="imported-files" title="Imported Files">
 ${setupCommand}
 </boltArtifact>${followupMessage}`,
-    id: generateId(),
-    createdAt: new Date(),
-  };
+      id: generateId(),
+      createdAt: new Date(),
+    },
+  ];
 
   const userMessage: Message = {
     role: 'user',
@@ -56,5 +66,5 @@ ${setupCommand}
     createdAt: new Date(),
   };
 
-  return { userMessage, assistantMessage };
+  return [userMessage, ...assistantMessages];
 };
