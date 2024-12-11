@@ -34,7 +34,7 @@ export const WelcomeIntro: React.FC = () => {
     <div className="w-full mx-auto px-4 py-6 space-y-6">
       <div className="text-center w-full mx-auto">
         <h1 className="text-3xl lg:text-5xl font-bold text-bolt-elements-textPrimary animate-fade-in bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-6">
-          Build AI Apps with Bolt.diy Bolt
+          Build AI Apps with Bolt.diy
         </h1>
       </div>
 
