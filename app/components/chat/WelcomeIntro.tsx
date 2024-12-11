@@ -9,7 +9,9 @@ const GitHubBadge = () => {
       className="block hover:opacity-90 transition-opacity h-full"
     >
       <div className="bg-bolt-elements-background-depth-2 rounded-lg p-4 border border-bolt-elements-borderColor h-full">
-        <h3 className="text-lg font-semibold mb-3 text-bolt-elements-textPrimary">2. Contribute to oTToDev/Bolt.New</h3>
+        <h3 className="text-lg font-semibold mb-3 text-bolt-elements-textPrimary">
+          2. Contribute to Bolt.diy/Bolt.New
+        </h3>
         <div className="flex justify-center items-center space-x-4">
           <img
             src="https://img.shields.io/github/stars/coleam00/bolt.new-any-llm?style=social"
@@ -32,7 +34,7 @@ export const WelcomeIntro: React.FC = () => {
     <div className="w-full mx-auto px-4 py-6 space-y-6">
       <div className="text-center w-full mx-auto">
         <h1 className="text-3xl lg:text-5xl font-bold text-bolt-elements-textPrimary animate-fade-in bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-6">
-          Build AI Apps with oTToDev Bolt
+          Build AI Apps with Bolt.diy Bolt
         </h1>
       </div>
 
