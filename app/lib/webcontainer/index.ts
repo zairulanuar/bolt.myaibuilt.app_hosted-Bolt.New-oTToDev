@@ -22,10 +22,19 @@ if (!import.meta.env.SSR) {
     import.meta.hot?.data.webcontainer ??
     Promise.resolve()
       .then(() => {
-        return WebContainer.boot({ workdirName: WORK_DIR_NAME });
+        return WebContainer.boot({
+          workdirName: WORK_DIR_NAME,
+          forwardPreviewErrors: true, // Enable error forwarding from iframes
+        });
       })
       .then((webcontainer) => {
         webcontainerContext.loaded = true;
+
+        // Listen for preview errors
+        webcontainer.on('preview-message', (message) => {
+          console.log('WebContainer preview message:', message);
+        });
+
         return webcontainer;
       });
 
