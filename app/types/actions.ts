@@ -1,4 +1,4 @@
-export type ActionType = 'file' | 'shell';
+export type ActionType = 'file' | 'shell' | 'preview';
 
 export interface BaseAction {
   content: string;
@@ -26,4 +26,5 @@ export interface ActionAlert {
   title: string;
   description: string;
   content: string;
+  source?: 'terminal' | 'preview'; // Add source to differentiate between terminal and preview errors
 }

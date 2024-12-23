@@ -1,4 +1,5 @@
 import { WebContainer } from '@webcontainer/api';
+import { workbenchStore } from '~/lib/stores/workbench';
 import { WORK_DIR_NAME } from '~/utils/constants';
 
 interface WebContainerContext {
@@ -33,6 +34,18 @@ if (!import.meta.env.SSR) {
         // Listen for preview errors
         webcontainer.on('preview-message', (message) => {
           console.log('WebContainer preview message:', message);
+
+          // Handle both uncaught exceptions and unhandled promise rejections
+          if (message.type === 'PREVIEW_UNCAUGHT_EXCEPTION' || message.type === 'PREVIEW_UNHANDLED_REJECTION') {
+            const isPromise = message.type === 'PREVIEW_UNHANDLED_REJECTION';
+            workbenchStore.actionAlert.set({
+              type: 'preview',
+              title: isPromise ? 'Unhandled Promise Rejection' : 'Uncaught Exception',
+              description: message.message,
+              content: `Error occurred at ${message.pathname}${message.search}${message.hash}\nPort: ${message.port}\n\nStack trace:\n${message.stack}`,
+              source: 'preview',
+            });
+          }
         });
 
         return webcontainer;
