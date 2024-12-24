@@ -63,6 +63,7 @@ bolt.diy was originally started by [Cole Medin](https://www.youtube.com/@ColeMed
 - ✅ Selection tool to target changes visually (@emcconnell)
 - ✅ Detect terminal Errors and ask bolt to fix it (@thecodacus)
 - ✅ Detect preview Errors and ask bolt to fix it (@wonderwhy-er)
+- ✅ Add Starter Template Options (@thecodacus)
 - ⬜ **HIGH PRIORITY** - Prevent bolt from rewriting files as often (file locking and diffs)
 - ⬜ **HIGH PRIORITY** - Better prompting for smaller LLMs (code window sometimes doesn't start)
 - ⬜ **HIGH PRIORITY** - Run agents in the backend as opposed to a single model call
@@ -72,7 +73,7 @@ bolt.diy was originally started by [Cole Medin](https://www.youtube.com/@ColeMed
 - ⬜ Upload documents for knowledge - UI design templates, a code base to reference coding style, etc.
 - ⬜ Voice prompting
 - ⬜ Azure Open AI API Integration
-- ⬜ Perplexity Integration
+- ✅ Perplexity Integration (@meetpateltech)
 - ⬜ Vertex AI Integration
 
 ## Features
