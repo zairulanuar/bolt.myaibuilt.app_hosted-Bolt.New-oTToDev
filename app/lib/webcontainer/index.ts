@@ -1,5 +1,4 @@
 import { WebContainer } from '@webcontainer/api';
-import { workbenchStore } from '~/lib/stores/workbench';
 import { WORK_DIR_NAME } from '~/utils/constants';
 
 interface WebContainerContext {
@@ -28,8 +27,10 @@ if (!import.meta.env.SSR) {
           forwardPreviewErrors: true, // Enable error forwarding from iframes
         });
       })
-      .then((webcontainer) => {
+      .then(async (webcontainer) => {
         webcontainerContext.loaded = true;
+
+        const { workbenchStore } = await import('~/lib/stores/workbench');
 
         // Listen for preview errors
         webcontainer.on('preview-message', (message) => {
