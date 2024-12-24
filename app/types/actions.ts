@@ -1,4 +1,4 @@
-export type ActionType = 'file' | 'shell' | 'preview';
+export type ActionType = 'file' | 'shell';
 
 export interface BaseAction {
   content: string;
