@@ -101,7 +101,7 @@ export class StreamingMessageParser {
                 const match = content.match(codeBlockRegex);
 
                 if (match) {
-                  content = match[1].replace(/^[ ]{4}/gm, '').trim(); // Remove common leading 4-space indent
+                  content = match[1]; // Remove common leading 4-space indent
                 }
               }
 
