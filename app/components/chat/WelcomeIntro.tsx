@@ -108,7 +108,7 @@ export const WelcomeIntro: React.FC = () => {
             </a>{' '}
             or{' '}
             <a
-              href="https://www.youtube.com/channel/@EduardsRuzga"
+              href="https://www.youtube.com/channel/UCLIo-9WnXvQcXfXomQvYSOg"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 hover:text-blue-600 transition-colors font-medium"
