@@ -56,6 +56,7 @@ export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
 
       try {
         const { workdir, data } = await gitClone(repoUrl, {
+          corsProxy: '/api/git-proxy',
           onProgress: (event) => {
             let percent;
             let fsPercent;
@@ -150,10 +151,11 @@ ${file.content}
     <>
       <button
         onClick={onClick}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-bolt-elements-textSecondary rounded-lg hover:bg-bolt-elements-background-depth-1 transition-colors"
+        title="Clone a Git Repo"
+        className="px-4 py-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary hover:bg-bolt-elements-background-depth-3 transition-all flex items-center gap-2"
       >
-        <div className="i-carbon-logo-github text-lg" />
-        Import from GitHub
+        <span className="i-ph:git-branch" />
+        Clone a Git Repo
       </button>
       {loading && (
         <LoadingOverlay

@@ -57,6 +57,7 @@ export function GitUrlImport() {
 
       try {
         const { workdir, data } = await gitClone(repoUrl, {
+          corsProxy: '/api/git-proxy',
           onProgress: (event) => {
             let percent;
             let fsPercent;

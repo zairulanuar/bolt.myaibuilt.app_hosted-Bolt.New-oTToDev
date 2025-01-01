@@ -48,7 +48,7 @@ export function useGit() {
   const gitClone = useCallback(
     async (
       url: string,
-      options?: { onProgress?: (event: { phase: string; loaded: number; total?: number }) => void },
+      options?: { corsProxy?: string; onProgress?: (event: { phase: string; loaded: number; total?: number }) => void },
     ) => {
       if (!webcontainer || !fs || !ready) {
         throw 'Webcontainer not initialized';

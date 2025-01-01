@@ -2,23 +2,24 @@ import { json } from '@remix-run/cloudflare';
 import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/cloudflare';
 
 // Handle all HTTP methods
-export async function action({ request }: ActionFunctionArgs) {
-  return handleProxyRequest(request);
+export async function action({ request, params }: ActionFunctionArgs) {
+  return handleProxyRequest(request, params['*']);
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  return handleProxyRequest(request);
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  return handleProxyRequest(request, params['*']);
 }
 
-async function handleProxyRequest(request: Request) {
+async function handleProxyRequest(request: Request, path: string | undefined) {
   try {
-    // Get the target URL from the query parameter
-    const url = new URL(request.url);
-    const targetURL = url.searchParams.get('url');
-
-    if (!targetURL) {
-      return json({ error: 'Target URL is required' }, { status: 400 });
+    if (!path) {
+      return json({ error: 'Invalid proxy URL format' }, { status: 400 });
     }
+
+    const url = new URL(request.url);
+
+    // Reconstruct the target URL
+    const targetURL = `https://${path}${url.search}`;
 
     // Forward the request to the target URL
     const response = await fetch(targetURL, {
