@@ -41,8 +41,6 @@ export function GitUrlImport() {
   const { ready: gitReady, gitClone } = useGit();
   const [imported, setImported] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const [progressText, setProgressText] = useState('');
 
   const importRepo = async (repoUrl?: string) => {
     if (!gitReady && !historyReady) {
@@ -50,45 +48,12 @@ export function GitUrlImport() {
     }
 
     if (repoUrl) {
-      setProgress(0);
-      setProgressText('Initializing clone...');
-
       const ig = ignore().add(IGNORE_PATTERNS);
 
       try {
-        const { workdir, data } = await gitClone(repoUrl, {
-          corsProxy: '/api/git-proxy',
-          onProgress: (event) => {
-            let percent;
-            let fsPercent;
-
-            switch (event.phase) {
-              case 'counting':
-                setProgress(5);
-                setProgressText(`Counting objects: ${event.loaded}...`);
-                break;
-              case 'receiving':
-                percent = event.total ? (event.loaded / event.total) * 50 + 10 : 10;
-                setProgress(percent);
-                setProgressText(`Receiving objects: ${event.loaded}${event.total ? `/${event.total}` : ''}...`);
-                break;
-              case 'resolving':
-                setProgress(65);
-                setProgressText('Resolving deltas...');
-                break;
-              case 'fs_operations':
-                fsPercent = event.total ? (event.loaded / event.total) * 25 + 70 : 70;
-                setProgress(fsPercent);
-                setProgressText(`Processing files: ${event.loaded}/${event.total}`);
-                break;
-            }
-          },
-        });
+        const { workdir, data } = await gitClone(repoUrl);
 
         if (importChat) {
-          setProgress(95);
-          setProgressText('Processing repository...');
-
           const filePaths = Object.keys(data).filter((filePath) => !ig.ignores(filePath));
           const textDecoder = new TextDecoder('utf-8');
 
@@ -102,8 +67,6 @@ export function GitUrlImport() {
               };
             })
             .filter((f) => f.content);
-
-          setProgressText('Analyzing project structure...');
 
           const commands = await detectProjectCommands(fileContents);
           const commandsMessage = createCommandsMessage(commands);
@@ -131,11 +94,7 @@ ${file.content}
             messages.push(commandsMessage);
           }
 
-          setProgress(98);
-          setProgressText('Finalizing import...');
           await importChat(`Git Project:${repoUrl.split('/').slice(-1)[0]}`, messages);
-          setProgress(100);
-          setProgressText('Import complete!');
         }
       } catch (error) {
         console.error('Error during import:', error);
@@ -174,13 +133,7 @@ ${file.content}
       {() => (
         <>
           <Chat />
-          {loading && (
-            <LoadingOverlay
-              message="Please wait while we clone the repository..."
-              progress={progress}
-              progressText={progressText}
-            />
-          )}
+          {loading && <LoadingOverlay message="Please wait while we clone the repository..." />}
         </>
       )}
     </ClientOnly>

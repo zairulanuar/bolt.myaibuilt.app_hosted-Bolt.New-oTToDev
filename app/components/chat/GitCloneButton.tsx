@@ -41,8 +41,6 @@ interface GitCloneButtonProps {
 export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
   const { ready, gitClone } = useGit();
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [progressText, setProgressText] = useState('');
 
   const onClick = async (_e: any) => {
     if (!ready) {
@@ -55,39 +53,9 @@ export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
       setLoading(true);
 
       try {
-        const { workdir, data } = await gitClone(repoUrl, {
-          corsProxy: '/api/git-proxy',
-          onProgress: (event) => {
-            let percent;
-            let fsPercent;
-
-            switch (event.phase) {
-              case 'counting':
-                setProgress(5);
-                setProgressText(`Counting objects: ${event.loaded}...`);
-                break;
-              case 'receiving':
-                percent = event.total ? (event.loaded / event.total) * 50 + 10 : 10;
-                setProgress(percent);
-                setProgressText(`Receiving objects: ${event.loaded}${event.total ? `/${event.total}` : ''}...`);
-                break;
-              case 'resolving':
-                setProgress(65);
-                setProgressText('Resolving deltas...');
-                break;
-              case 'fs_operations':
-                fsPercent = event.total ? (event.loaded / event.total) * 25 + 70 : 70;
-                setProgress(fsPercent);
-                setProgressText(`Processing files: ${event.loaded}/${event.total}`);
-                break;
-            }
-          },
-        });
+        const { workdir, data } = await gitClone(repoUrl);
 
         if (importChat) {
-          setProgress(95);
-          setProgressText('Processing repository...');
-
           const filePaths = Object.keys(data).filter((filePath) => !ig.ignores(filePath));
           console.log(filePaths);
 
@@ -103,8 +71,6 @@ export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
               };
             })
             .filter((f) => f.content);
-
-          setProgressText('Analyzing project structure...');
 
           const commands = await detectProjectCommands(fileContents);
           const commandsMessage = createCommandsMessage(commands);
@@ -132,11 +98,7 @@ ${file.content}
             messages.push(commandsMessage);
           }
 
-          setProgress(98);
-          setProgressText('Finalizing import...');
           await importChat(`Git Project:${repoUrl.split('/').slice(-1)[0]}`, messages);
-          setProgress(100);
-          setProgressText('Import complete!');
         }
       } catch (error) {
         console.error('Error during import:', error);
@@ -157,13 +119,7 @@ ${file.content}
         <span className="i-ph:git-branch" />
         Clone a Git Repo
       </button>
-      {loading && (
-        <LoadingOverlay
-          message="Please wait while we clone the repository..."
-          progress={progress}
-          progressText={progressText}
-        />
-      )}
+      {loading && <LoadingOverlay message="Please wait while we clone the repository..." />}
     </>
   );
 }

@@ -33,29 +33,22 @@ export function useGit() {
   const [webcontainer, setWebcontainer] = useState<WebContainer>();
   const [fs, setFs] = useState<PromiseFsClient>();
   const fileData = useRef<Record<string, { data: any; encoding?: string }>>({});
-  const operationCounter = useRef({ total: 0, completed: 0 });
-
   useEffect(() => {
     webcontainerPromise.then((container) => {
       fileData.current = {};
-      operationCounter.current = { total: 0, completed: 0 };
       setWebcontainer(container);
-      setFs(getFs(container, fileData, operationCounter));
+      setFs(getFs(container, fileData));
       setReady(true);
     });
   }, []);
 
   const gitClone = useCallback(
-    async (
-      url: string,
-      options?: { corsProxy?: string; onProgress?: (event: { phase: string; loaded: number; total?: number }) => void },
-    ) => {
+    async (url: string) => {
       if (!webcontainer || !fs || !ready) {
         throw 'Webcontainer not initialized';
       }
 
       fileData.current = {};
-      operationCounter.current = { total: 0, completed: 0 };
 
       try {
         await git.clone({
@@ -66,16 +59,6 @@ export function useGit() {
           depth: 1,
           singleBranch: true,
           corsProxy: '/api/git-proxy',
-          onProgress: (evt) => {
-            if (options?.onProgress) {
-              if (evt.phase === 'complete') {
-                // Reset counter for file operations
-                operationCounter.current = { total: 0, completed: 0 };
-              }
-
-              options.onProgress(evt);
-            }
-          },
           onAuth: (url) => {
             let auth = lookupSavedPassword(url);
 
@@ -122,28 +105,23 @@ export function useGit() {
 const getFs = (
   webcontainer: WebContainer,
   record: MutableRefObject<Record<string, { data: any; encoding?: string }>>,
-  counter: MutableRefObject<{ total: number; completed: number }>,
 ) => ({
   promises: {
     readFile: async (path: string, options: any) => {
       const encoding = options?.encoding;
       const relativePath = pathUtils.relative(webcontainer.workdir, path);
-      counter.current.total++;
 
       try {
         const result = await webcontainer.fs.readFile(relativePath, encoding);
-        counter.current.completed++;
 
         return result;
       } catch (error) {
-        counter.current.completed++;
         throw error;
       }
     },
     writeFile: async (path: string, data: any, options: any) => {
       const encoding = options.encoding;
       const relativePath = pathUtils.relative(webcontainer.workdir, path);
-      counter.current.total++;
 
       if (record.current) {
         record.current[relativePath] = { data, encoding };
@@ -151,94 +129,71 @@ const getFs = (
 
       try {
         const result = await webcontainer.fs.writeFile(relativePath, data, { ...options, encoding });
-        counter.current.completed++;
 
         return result;
       } catch (error) {
-        counter.current.completed++;
         throw error;
       }
     },
     mkdir: async (path: string, options: any) => {
       const relativePath = pathUtils.relative(webcontainer.workdir, path);
-      counter.current.total++;
 
       try {
         const result = await webcontainer.fs.mkdir(relativePath, { ...options, recursive: true });
-        counter.current.completed++;
 
         return result;
       } catch (error) {
-        counter.current.completed++;
         throw error;
       }
     },
     readdir: async (path: string, options: any) => {
       const relativePath = pathUtils.relative(webcontainer.workdir, path);
-      counter.current.total++;
 
       try {
         const result = await webcontainer.fs.readdir(relativePath, options);
-        counter.current.completed++;
 
         return result;
       } catch (error) {
-        counter.current.completed++;
         throw error;
       }
     },
     rm: async (path: string, options: any) => {
       const relativePath = pathUtils.relative(webcontainer.workdir, path);
-      counter.current.total++;
 
       try {
         const result = await webcontainer.fs.rm(relativePath, { ...(options || {}) });
-        counter.current.completed++;
 
         return result;
       } catch (error) {
-        counter.current.completed++;
         throw error;
       }
     },
     rmdir: async (path: string, options: any) => {
       const relativePath = pathUtils.relative(webcontainer.workdir, path);
-      counter.current.total++;
 
       try {
         const result = await webcontainer.fs.rm(relativePath, { recursive: true, ...options });
-        counter.current.completed++;
 
         return result;
       } catch (error) {
-        counter.current.completed++;
         throw error;
       }
     },
     unlink: async (path: string) => {
       const relativePath = pathUtils.relative(webcontainer.workdir, path);
-      counter.current.total++;
 
       try {
-        const result = await webcontainer.fs.rm(relativePath, { recursive: false });
-        counter.current.completed++;
-
-        return result;
+        return await webcontainer.fs.rm(relativePath, { recursive: false });
       } catch (error) {
-        counter.current.completed++;
         throw error;
       }
     },
     stat: async (path: string) => {
-      counter.current.total++;
-
       try {
         const relativePath = pathUtils.relative(webcontainer.workdir, path);
         const resp = await webcontainer.fs.readdir(pathUtils.dirname(relativePath), { withFileTypes: true });
         const name = pathUtils.basename(relativePath);
         const fileInfo = resp.find((x) => x.name == name);
-
-        counter.current.completed++;
 
         if (!fileInfo) {
           throw new Error(`ENOENT: no such file or directory, stat '${path}'`);
@@ -255,7 +210,6 @@ const getFs = (
           gid: 1000,
         };
       } catch (error: any) {
-        counter.current.completed++;
         console.log(error?.message);
 
         const err = new Error(`ENOENT: no such file or directory, stat '${path}'`) as NodeJS.ErrnoException;
@@ -267,11 +221,9 @@ const getFs = (
       }
     },
     lstat: async (path: string) => {
-      return await getFs(webcontainer, record, counter).promises.stat(path);
+      return await getFs(webcontainer, record).promises.stat(path);
     },
     readlink: async (path: string) => {
-      counter.current.total++;
-      counter.current.completed++;
       throw new Error(`EINVAL: invalid argument, readlink '${path}'`);
     },
     symlink: async (target: string, path: string) => {
